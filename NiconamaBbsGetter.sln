@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NiconamaBbsGetter", "NiconamaBbsGetter\NiconamaBbsGetter.csproj", "{AADFC8F5-0670-43DA-B105-BCAFAE43CEA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrowserCookie", "..\MyCommon\BrowserCookie\BrowserCookie.csproj", "{73E5AA25-AFF3-4D22-A097-F741704EAE42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLiteWrapper", "..\MyCommon\SQLiteWrapper\SQLiteWrapper.csproj", "{10B29AF1-6B2F-4F32-9A1C-B459C8813051}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCommon", "..\MyCommon\MyCommon\MyCommon.csproj", "{96E6A872-52B6-4CB7-AA3E-51B1BC21C6AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySQLWrapper", "..\MyCommon\MySQLWrapper\MySQLWrapper\MySQLWrapper.csproj", "{3034B140-9E16-4786-8B10-BE88DE877149}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AADFC8F5-0670-43DA-B105-BCAFAE43CEA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AADFC8F5-0670-43DA-B105-BCAFAE43CEA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AADFC8F5-0670-43DA-B105-BCAFAE43CEA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AADFC8F5-0670-43DA-B105-BCAFAE43CEA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73E5AA25-AFF3-4D22-A097-F741704EAE42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73E5AA25-AFF3-4D22-A097-F741704EAE42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73E5AA25-AFF3-4D22-A097-F741704EAE42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73E5AA25-AFF3-4D22-A097-F741704EAE42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10B29AF1-6B2F-4F32-9A1C-B459C8813051}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10B29AF1-6B2F-4F32-9A1C-B459C8813051}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10B29AF1-6B2F-4F32-9A1C-B459C8813051}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10B29AF1-6B2F-4F32-9A1C-B459C8813051}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96E6A872-52B6-4CB7-AA3E-51B1BC21C6AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96E6A872-52B6-4CB7-AA3E-51B1BC21C6AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96E6A872-52B6-4CB7-AA3E-51B1BC21C6AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96E6A872-52B6-4CB7-AA3E-51B1BC21C6AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3034B140-9E16-4786-8B10-BE88DE877149}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3034B140-9E16-4786-8B10-BE88DE877149}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3034B140-9E16-4786-8B10-BE88DE877149}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3034B140-9E16-4786-8B10-BE88DE877149}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
