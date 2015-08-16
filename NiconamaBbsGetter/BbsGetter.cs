@@ -28,6 +28,10 @@ namespace NiconamaBbsGetter
         public string Pass;
         public string DbName;
     }
+    public class Report
+    {
+        public string CurrentUrl;
+    }
     public class BbsGetter
     {
         readonly string cacheDir;
@@ -99,9 +103,15 @@ namespace NiconamaBbsGetter
             var query = $"CREATE TABLE {communityId} ({col_resnum} int primary key, name varchar(100), trip varchar(45), id varchar(45) not null, date datetime, body text, oekaki_url varchar(60), oekaki_image mediumblob)";
             ryu_s.Db.MySQL.ExecuteNonQuery(conn, query);
         }
-        public async Task Do()
+        public async Task Do(IProgress<Report> report)
         {
-
+            await Task.Run(async () =>
+            {
+                await DoInternal(report);
+            });
+        }            
+        public async Task DoInternal(IProgress<Report> report)
+        { 
             var conn = ryu_s.Db.MySQL.CreateInstance(host, username, password, dbName);
             conn.Open();
 
@@ -140,7 +150,7 @@ namespace NiconamaBbsGetter
                 if (m.Success)
                 {
                     var latestResnum = int.Parse(m.Groups[1].Value);
-                    nextUrl = GetUrl(latestResnum + 30);
+                    nextUrl = GetUrl(latestResnum + ressPerPage);
                 }
             }
 
@@ -148,7 +158,11 @@ namespace NiconamaBbsGetter
             {
                 new KeyValuePair<string,string>("Accept-Language", "ja-JP"),
             };
-            loop:
+loop:
+            report.Report(new Report
+            {
+                CurrentUrl = nextUrl,
+            });
             Console.WriteLine(nextUrl);
             var nextHtml = await GetHtml(nextUrl + query, headers);
             var nextList = ParseHtml(nextHtml);
@@ -157,10 +171,10 @@ namespace NiconamaBbsGetter
             {
                 await SaveToMysql(conn, res);
             }
-            if (nextList.Count == 30)
+            if (nextList.Count == ressPerPage)
             {
                 var currentResnum = GetResnumFromUrl(nextUrl);
-                nextUrl = GetUrl(currentResnum + 30);
+                nextUrl = GetUrl(currentResnum + ressPerPage);
                 goto loop;
             }
             conn.Close();
@@ -247,8 +261,8 @@ namespace NiconamaBbsGetter
                     }
                 }
             }
-            var query = $"INSERT INTO {communityId} ({col_resnum},{col_name},{col_id},{col_date},{col_body},{col_oekaki_url},{col_oekaki_image})"
-                + $"values(@{col_resnum},@{col_name},@{col_id},@{col_date},@{col_body},@{col_oekaki_url},@{col_oekaki_image})";
+            var query = $"INSERT INTO {communityId} ({col_resnum},{col_name},{col_trip},{col_id},{col_date},{col_body},{col_oekaki_url},{col_oekaki_image})"
+                + $"values(@{col_resnum},@{col_name},@{col_trip},@{col_id},@{col_date},@{col_body},@{col_oekaki_url},@{col_oekaki_image})";
             var cmd = new MySqlCommand(query, conn);
             cmd.Parameters.Add($"@{col_resnum}", resnum_type);
             cmd.Parameters.Add($"@{col_name}", name_type, name_size);
@@ -289,7 +303,7 @@ namespace NiconamaBbsGetter
                     {
                         new KeyValuePair<string,string>("Accept", ".png,image/png"),
                     };
-                    await Task.Delay(5000);
+                    await Task.Delay(waitTime);
                     await ryu_s.Net.Http.GetImageAsync(pngPath + query, headers2, cc, filePath);
                 }
             }
@@ -380,7 +394,7 @@ namespace NiconamaBbsGetter
                 maxFilePath = cacheDir + $"http：／／dic.nicovideo.jp／b／c／{communityId}／{max}-.txt";
             }
             //cacheDirにすでにキャッシュが存在し、なおかつMySQLを１から再構築する際にコメントアウトする。
-            //            maxFilePath = cacheDir + $"http：／／dic.nicovideo.jp／b／c／{communityId}／1-.txt";
+//            maxFilePath = cacheDir + $"http：／／dic.nicovideo.jp／b／c／{communityId}／1-.txt";
             return maxFilePath;
         }
         /// <summary>

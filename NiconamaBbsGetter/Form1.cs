@@ -37,35 +37,55 @@ namespace NiconamaBbsGetter
             Properties.Settings.Default.Save();
             base.OnClosing(e);
         }
+        private void SetProgress(Report resport)
+        {
+            SetText(resport.CurrentUrl);
+        }
+        private void SetText(string text)
+        {
+            labelProgress.Text = text;
+        }
         private async void button1_Click(object sender, EventArgs e)
         {
-            while (true)
+            try
             {
-                var browser = ryu_s.BrowserCookie.BrowserManagerMaker.CreateInstance(ryu_s.MyCommon.Browser.BrowserType.Chrome);
-                var cookies = browser.CookieGetter.GetCookieCollection("nicovideo.jp");
-                var cc = new System.Net.CookieContainer();
-                cc.Add(cookies);
-
-                var settings = new NiconamaBbsGetter.Settings();
-                settings.CacheDir = txt_CacheDir.Text;
-                settings.Cc = cc;
-                settings.CommunityId = txt_communityId.Text;
-                settings.Host = txt_Host.Text;
-                settings.User = txt_User.Text;
-                settings.Pass = txt_Pass.Text;
-                settings.DbName = txt_DbName.Text;
-
-                var nicoBbs = new NiconamaBbsGetter.BbsGetter(settings);
-                try {
-                    await nicoBbs.Do();
-                }catch(System.Net.WebException ex)
+                button1.Enabled = false;
+                while (true)
                 {
-                    ryu_s.MyCommon.Logging.LogException(ryu_s.MyCommon.LogLevel.error, ex);
-                    Console.WriteLine(ex.Message);
+                    var browser = ryu_s.BrowserCookie.BrowserManagerMaker.CreateInstance(ryu_s.MyCommon.Browser.BrowserType.Chrome);
+                    var cookies = browser.CookieGetter.GetCookieCollection("nicovideo.jp");
+                    var cc = new System.Net.CookieContainer();
+                    cc.Add(cookies);
+
+                    var settings = new NiconamaBbsGetter.Settings();
+                    settings.CacheDir = txt_CacheDir.Text;
+                    settings.Cc = cc;
+                    settings.CommunityId = txt_communityId.Text;
+                    settings.Host = txt_Host.Text;
+                    settings.User = txt_User.Text;
+                    settings.Pass = txt_Pass.Text;
+                    settings.DbName = txt_DbName.Text;
+
+                    var nicoBbs = new NiconamaBbsGetter.BbsGetter(settings);
+                    try
+                    {
+                        await nicoBbs.Do(new Progress<Report>(SetProgress));
+
+                    }
+                    catch (System.Net.WebException ex)
+                    {
+                        ryu_s.MyCommon.Logging.LogException(ryu_s.MyCommon.LogLevel.error, ex);
+                        Console.WriteLine(ex.Message);
+                    }
+                    SetText("30秒待機");
+                    await Task.Delay(30 * 1000);
                 }
-                Console.WriteLine("30秒待機");
-                await Task.Delay(30 * 1000);
+            }
+            finally
+            {
+                button1.Enabled = true;
             }
         }
+            
     }
 }
